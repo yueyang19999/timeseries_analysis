@@ -59,10 +59,33 @@ Data source: **Yahoo Finance** (QCOM, AAPL, ^GSPC).
 ---
 
 ## Key Results (Illustrative)
-- 1-day and 10-day VaR/ES estimates for QCOM and AAPL.  
-- GJRGARCH(1,1) produced the most conservative VaR, capturing volatility clustering + asymmetry.  
-- RiskMetrics underestimates tail risk.  
-- Quantile regression provides an alternative, but less conservative, measure.
+- **RiskMetrics (IGARCH)**  
+  - Produces relatively low VaR estimates because it assumes normally distributed returns and does not capture fat tails.  
+  - Likely underestimates tail risk for both QCOM and AAPL.  
+
+- **GARCH(1,1) with Gaussian innovations**  
+  - Improves volatility modeling by capturing clustering.  
+  - Still too light-tailed — extreme events are underestimated.  
+
+- **GARCH(1,1) with Student-t innovations**  
+  - Heavier tails → higher VaR values than Gaussian.  
+  - Provides more conservative estimates, better matching real market shocks.  
+
+- **IGARCH(1,1) for Apple**  
+  - Captures persistence of volatility but can exaggerate long memory.  
+  - Works as a baseline but less flexible compared to GJR-GARCH.  
+
+- **GJRGARCH(1,1)**  
+  - Captures **leverage effects** (asymmetric volatility: bad news → higher volatility than good news).  
+  - Produces the most realistic VaR estimates, especially during drawdowns.  
+
+- **Quantile Regression (S&P 500 as factor)**  
+  - Provides a factor-based conditional VaR estimate.  
+  - Useful for stress-testing against market moves, but less conservative than GJR-GARCH.  
+
+** Overall:**  
+The **GJRGARCH(1,1)** model with leverage effects gave the most robust and conservative 99% VaR estimates. RiskMetrics consistently underestimated extreme risks, while Student-t GARCH provided a strong improvement by incorporating fat tails.  
+
 
 ---
 
